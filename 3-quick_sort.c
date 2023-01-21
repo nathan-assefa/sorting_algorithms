@@ -7,7 +7,7 @@
  * * @a: The first number to be swapped
  * * @b: The secong number to be swapped
  */
-void swap(int array[], int size, int *a, int *b)
+void _swap(int array[], int size, int *a, int *b)
 {
 	if (*a != *b)
 	{
@@ -34,10 +34,10 @@ int partitioned(int array[], int low, int high, int size)
 	{
 		if (array[j] < pivot_value)
 		{
-			swap(array, size, &array[j], &array[i++]);
+			_swap(array, size, &array[j], &array[i++]);
 		}
 	}
-	swap(array, size, &array[i], &array[high]);
+	_swap(array, size, &array[i], &array[high]);
 	return (i);
 }
 

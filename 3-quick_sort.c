@@ -9,7 +9,7 @@
  *
  * Return: void
  */
-void swap(int *array, size_t size, int *a, int *b)
+void _swap(int *array, size_t size, int *a, int *b)
 {
 	if (*a != *b)
 	{
@@ -35,8 +35,8 @@ size_t lomuto_partition(int *array, size_t size, ssize_t lo, ssize_t hi)
 
 	for (i = j = lo; j < hi; j++)
 		if (array[j] < pivot)
-			swap(array, size, &array[j], &array[i++]);
-	swap(array, size, &array[i], &array[hi]);
+			_swap(array, size, &array[j], &array[i++]);
+	_swap(array, size, &array[i], &array[hi]);
 
 	return (i);
 }

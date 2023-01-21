@@ -1,4 +1,5 @@
 #include "sort.h"
+#include <stdbool.h>
 
 /**
  * * bubble_sort- Writting bubble sort
@@ -7,24 +8,25 @@
  */
 void bubble_sort(int *array, size_t size)
 {
-	size_t i, j, state;
+	size_t i, j;
+	bool state;
 
 	if (!array && size < 2)
 		return;
 
 	for (i = 0; i < size - 1; i++)
 	{
-		state = 0;
+		state = false;
 		for (j = 0; j < size - 1 - i; j++)
 		{
 			if (array[j] > array[j + 1])
 			{
 				swap(&array[j], &array[j + 1]);
 				print_array(array, size);
-				state = 1;
+				state = true;
 			}
 		}
-		if (state == 0)
+		if (state)
 			break;
 	}
 }

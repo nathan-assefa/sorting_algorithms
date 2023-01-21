@@ -47,15 +47,13 @@ void _swap(listint_t **list, listint_t *tmp)
  */
 void insertion_sort_list(listint_t **list)
 {
-	int state = 0;
-	listint_t *tmp, *tmp2, *head = (*list)->next;
+	listint_t *tmp, *head = (*list)->next;
 
 	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
 
 	for (; head; head = head->next)
 	{
-		state = 0;
 		tmp = head;
 
 		while (tmp->prev)

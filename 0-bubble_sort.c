@@ -1,36 +1,44 @@
 #include "sort.h"
-/**
- * bubble_sort - Used to sort a given set of n elements
- * provided in form of an array with n number of elements.
- * Bubble Sort compares all the element one by one and sort
- * them based on their values.
- * @array: Array of data to be sorted
- * @size: Size of the array
- */
+#include <stdbool.h>
 
+/**
+ * * bubble_sort- Writting bubble sort
+ * * @array: an array to be sorted using bubble sort
+ * * @size: size of an array
+ */
 void bubble_sort(int *array, size_t size)
 {
-	int i = 0, j = 0, sorted = 1, tmp = 0;
+	size_t i = size, j, state = 0;
 
-	if (size < 2)
+	if (!array && size < 2)
 		return;
-	j = size;
-	while (sorted == 1 && j > 0)
+
+	while (!state)
 	{
-		sorted = 0;
-		i = 1;
-		while (i <= j)
+		state = 1;
+		for (j = 0; j < i - 1; j++)
 		{
-			if (array[i - 1] > array[i] && array[i] != '\0')
+			if (array[j] > array[j + 1])
 			{
-				tmp = array[i - 1];
-				array[i - 1] = array[i];
-				array[i] = tmp;
+				swap(&array[j], &array[j + 1]);
 				print_array(array, size);
-				sorted = 1;
+				state = 0;
 			}
-			i += 1;
 		}
-		j -= 1;
+		i--;
 	}
+}
+
+/**
+ * * swap- To swap two integers
+ * * @a: first integer to be swapped
+ * * @b: second number to be swapped
+ */
+void swap(int *a, int *b)
+{
+	int tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }

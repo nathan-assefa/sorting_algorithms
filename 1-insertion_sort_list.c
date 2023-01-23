@@ -7,7 +7,7 @@
  */
 void _swap(listint_t **list, listint_t *aux)
 {
-	if (!tmp->prev->prev)
+	if (!aux->prev->prev)
 	{
 		aux->prev->next = aux->next;
 		if (aux->next)
@@ -18,7 +18,7 @@ void _swap(listint_t **list, listint_t *aux)
 		*list = aux;
 	}
 
-	else if (tmp->prev->prev && tmp->next)
+	else if (aux->prev->prev && aux->next)
 	{
 		aux->prev->next = aux->next;
 		aux->next->prev = aux->prev;

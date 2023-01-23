@@ -3,37 +3,41 @@
 /**
  * * _swap- To swap elements of a list
  * * @list: The main list to be swapped
- * * @aux: tmporary pointer to list
+ * * @tmp: tmporary pointer to list
  */
-void _swap(listint_t **list, listint_t *aux)
+void _swap(listint_t **list, listint_t *tmp)
 {
+	listint_t *tmp2;
+
 	if (!tmp->prev->prev)
 	{
-		aux->prev->next = aux->next;
-		if (aux->next)
-			aux->next->prev = aux->prev;
-		aux->next = aux->prev;
-		aux->prev = aux->prev->prev;
-		aux->next->prev = aux;
-		*list = aux;
+		(*list)->next = tmp->next;
+		if (tmp->next)
+			tmp->next->prev = *list;
+		(*list)->prev = tmp;
+		tmp->next = *list;
+		tmp->prev = NULL;
+		*list = tmp;
 	}
 
 	else if (tmp->prev->prev && tmp->next)
 	{
-		aux->prev->next = aux->next;
-		aux->next->prev = aux->prev;
-		aux->prev->prev->next = aux;
-		aux->next = aux->prev;
-		aux->prev = aux->next->prev;
-		aux->next->prev = aux;
+		tmp->prev->next = tmp->next;
+		tmp->next->prev = tmp->prev;
+		tmp->prev->prev->next = tmp;
+		tmp->next = tmp->prev;
+		tmp->prev = tmp->next->prev;
+		tmp->next->prev = tmp;
+
 	}
 	else
 	{
-		aux->prev->next = aux->next;
-		aux->next = aux->prev;
-		aux->prev->prev->next = aux;
-		aux->prev = aux->next->prev;
-		aux->next->prev = aux;
+		tmp2 = tmp->prev;
+		tmp2->prev->next = tmp;
+		tmp2->next = tmp->next;
+		tmp->prev = tmp2->prev;
+		tmp2->prev = tmp;
+		tmp->next = tmp2;
 	}
 }
 

@@ -30,7 +30,7 @@ void _swap(listint_t **list, listint_t *tmp)
 		tmp->next->prev = tmp;
 
 	}
-	else if (!tmp-next)
+	else if (!tmp->next)
 	{
 		tmp2 = tmp->prev;
 		tmp2->prev->next = tmp;

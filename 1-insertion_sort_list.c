@@ -1,70 +1,80 @@
 #include "sort.h"
-
 /**
- * * _swap- To swap elements of a list
- * * @list: The main list to be swapped
- * * @tmp: tmporary pointer to list
+ * swap_head - swaps a node at the beggining of the list
+ * @list: Doubly linked list with nodes to sort acording to number n.
+ * @aux: auxiliar node to compare
  */
-void _swap(listint_t **list, listint_t *tmp)
+void swap_head(listint_t **list, listint_t *aux)
 {
-	listint_t *tmp2;
-
-	if (!tmp->prev->prev)
-	{
-		(*list)->next = tmp->next;
-		if (tmp->next)
-			tmp->next->prev = *list;
-		(*list)->prev = tmp;
-		tmp->next = *list;
-		tmp->prev = NULL;
-		*list = tmp;
-	}
-
-	else if (tmp->prev->prev && tmp->next)
-	{
-		tmp->prev->next = tmp->next;
-		tmp->next->prev = tmp->prev;
-		tmp->prev->prev->next = tmp;
-		tmp->next = tmp->prev;
-		tmp->prev = tmp->next->prev;
-		tmp->next->prev = tmp;
-
-	}
-	else
-	{
-		tmp2 = tmp->prev;
-		tmp2->prev->next = tmp;
-		tmp2->next = tmp->next;
-		tmp->prev = tmp2->prev;
-		tmp2->prev = tmp;
-		tmp->next = tmp2;
-	}
+	aux->prev->next = aux->next;
+	if (aux->next)
+		aux->next->prev = aux->prev;
+	aux->next = aux->prev;
+	aux->prev = aux->prev->prev;
+	aux->next->prev = aux;
+	*list = aux;
 }
-
 /**
- * * insertion_sort_list- Insertion sorting
- * * @list: The list to be sorted
+ * swap_middle - swaps a node at the middle of the list
+ * @aux: auxiliar node to compare
+ */
+void swap_middle(listint_t *aux)
+{
+	aux->prev->next = aux->next;
+	aux->next->prev = aux->prev;
+	aux->prev->prev->next = aux;
+	aux->next = aux->prev;
+	aux->prev = aux->next->prev;
+	aux->next->prev = aux;
+}
+/**
+ * swap_tail - swaps a node at the end of the list
+ * @aux: auxiliar node to compare
+ */
+void swap_tail(listint_t *aux)
+{
+	aux->prev->next = aux->next;
+	aux->next = aux->prev;
+	aux->prev->prev->next = aux;
+	aux->prev = aux->next->prev;
+	aux->next->prev = aux;
+}
+/**
+ * insertion_sort_list - Insertion sort is a simple sorting algorithm
+ * that builds the final sorted array (or list) one item at a time.
+ * @list: Doubly linked list with nodes to sort acording to number n.
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *tmp, *head = (*list)->next;
+	listint_t *aux = NULL;
+	int i = 0, j = 0;
 
-	if (list == NULL || *list == NULL || (*list)->next == NULL)
+	if (!list || !(*list)->next)
 		return;
-
-	for (; head; head = head->next)
+	aux = (*list)->next;
+	while (aux)
 	{
-		tmp = head;
-
-		while (tmp->prev)
+		i++;
+		while (aux->prev)
 		{
-			if (tmp->prev->n > tmp->n)
+			if (aux->prev->n > aux->n)
 			{
-				_swap(list, tmp);
-				print_list((const listint_t *)*list);
+				if (!aux->prev->prev)
+					swap_head(list, aux);
+				else if (aux->prev->prev && aux->next)
+					swap_middle(aux);
+				else if (!aux->next)
+					swap_tail(aux);
+				print_list(*list);
 			}
 			else
-				tmp = tmp->prev;
+				aux = aux->prev;
 		}
+		while (j <= i)
+		{
+			aux = aux->next;
+			j++;
+		}
+		j = 0;
 	}
 }

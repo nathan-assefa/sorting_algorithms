@@ -61,7 +61,7 @@ void insertion_sort_list(listint_t **list)
 			if (tmp->prev->n > tmp->n)
 			{
 				_swap(list, tmp);
-				print_list(*list);
+				print_list((const listint_t *)*list);
 			}
 			else
 				tmp = tmp->prev;

@@ -1,70 +1,71 @@
 #include "sort.h"
-
 /**
- * * _swap- To swap elements of a list
- * * @list: The main list to be swapped
- * * @tmp: tmporary pointer to list
+ * * _swap - swaps a node at the beggining of the list
+ * * @list: Doubly linked list with nodes to sort acording to number n.
+ * * @aux: auxiliar node to compare
  */
-void _swap(listint_t **list, listint_t *tmp)
+void _swap(listint_t **list, listint_t *aux)
 {
-	listint_t *tmp2;
-
-	if (!tmp->prev->prev)
+	if (!aux->prev->prev)
 	{
-		(*list)->next = tmp->next;
-		if (tmp->next)
-			tmp->next->prev = *list;
-		(*list)->prev = tmp;
-		tmp->next = *list;
-		tmp->prev = NULL;
-		*list = tmp;
+		aux->prev->next = aux->next;
+		if (aux->next)
+			aux->next->prev = aux->prev;
+		aux->next = aux->prev;
+		aux->prev = aux->prev->prev;
+		aux->next->prev = aux;
+		*list = aux;
 	}
-
-	else if (tmp->prev->prev && tmp->next)
+	else if (aux->prev->prev && aux->next)
 	{
-		tmp->prev->next = tmp->next;
-		tmp->next->prev = tmp->prev;
-		tmp->prev->prev->next = tmp;
-		tmp->next = tmp->prev;
-		tmp->prev = tmp->next->prev;
-		tmp->next->prev = tmp;
-
+		aux->prev->next = aux->next;
+		aux->next->prev = aux->prev;
+		aux->prev->prev->next = aux;
+		aux->next = aux->prev;
+		aux->prev = aux->next->prev;
+		aux->next->prev = aux;
 	}
-	else if (!tmp->next)
+	else if (!aux->next)
 	{
-		tmp2 = tmp->prev;
-		tmp2->prev->next = tmp;
-		tmp2->next = tmp->next;
-		tmp->prev = tmp2->prev;
-		tmp2->prev = tmp;
-		tmp->next = tmp2;
+		aux->prev->next = aux->next;
+		aux->next = aux->prev;
+		aux->prev->prev->next = aux;
+		aux->prev = aux->next->prev;
+		aux->next->prev = aux;
 	}
 }
 
 /**
- * * insertion_sort_list- Insertion sorting
- * * @list: The list to be sorted
+ * * insertion_sort_list - Insertion sort is a simple sorting algorithm
+ * * that builds the final sorted array (or list) one item at a time.
+ * * @list: Doubly linked list with nodes to sort acording to number n.
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *tmp, *head = (*list)->next;
+	listint_t *aux = NULL;
+	int i = 0, j = 0;
 
-	if (list == NULL || *list == NULL || (*list)->next == NULL)
+	if (!list || !(*list)->next)
 		return;
-
-	for (; head; head = head->next)
+	aux = (*list)->next;
+	while (aux)
 	{
-		tmp = head;
-
-		while (tmp->prev)
+		i++;
+		while (aux->prev)
 		{
-			if (tmp->prev->n > tmp->n)
+			if (aux->prev->n > aux->n)
 			{
-				_swap(list, tmp);
-				print_list((const listint_t *)*list);
+				_swap(list, aux);
+				print_list(*list);
 			}
 			else
-				tmp = tmp->prev;
+				aux = aux->prev;
 		}
+		while (j <= i)
+		{
+			aux = aux->next;
+			j++;
+		}
+		j = 0;
 	}
 }

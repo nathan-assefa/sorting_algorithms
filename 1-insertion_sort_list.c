@@ -2,7 +2,7 @@
 /**
  * swap_head - swaps a node at the beggining of the list
  * @list: Doubly linked list with nodes to sort acording to number n.
- * @aux: auxiliar node to compare
+ * @tmp: auxiliar node to compare
  */
 void swap_head(listint_t **list, listint_t *tmp)
 {
@@ -16,7 +16,7 @@ void swap_head(listint_t **list, listint_t *tmp)
 }
 /**
  * swap_middle - swaps a node at the middle of the list
- * @aux: auxiliar node to compare
+ * @tmp: auxiliar node to compare
  */
 void swap_middle(listint_t *tmp)
 {
@@ -29,15 +29,18 @@ void swap_middle(listint_t *tmp)
 }
 /**
  * swap_tail - swaps a node at the end of the list
- * @aux: auxiliar node to compare
+ * @tmp: auxiliar node to compare
  */
-void swap_tail(listint_t *aux)
+void swap_tail(listint_t *tmp)
 {
-	aux->prev->next = aux->next;
-	aux->next = aux->prev;
-	aux->prev->prev->next = aux;
-	aux->prev = aux->next->prev;
-	aux->next->prev = aux;
+	listint_t *tmp2;
+
+	tmp2 = tmp->prev;
+	tmp2->prev->next = tmp;
+	tmp2->next = tmp->next;
+	tmp->prev = tmp2->prev;
+	tmp2->prev = tmp;
+	tmp->next = tmp2;
 }
 /**
  * insertion_sort_list - Insertion sort is a simple sorting algorithm

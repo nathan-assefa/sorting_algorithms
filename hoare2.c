@@ -1,6 +1,4 @@
 #include "sort.h"
-#define parent(x) (((x) - 1) / 2)
-#define leftchild(x) (((x) * 2) + 1)
 
 /**
  * swap - swaps 2 int values
@@ -23,71 +21,63 @@ void swap(int *array, size_t size, int *a, int *b)
 }
 
 /**
-*siftdown - siftdown implementation
-*
-*@array: array to be sorted
-*@start: start of array
-*@end: end of array
-*@size: size of array
-*
-*/
-void siftdown(int *array, size_t start, size_t end, size_t size)
+ * hoare_partition - partitions the array
+ * @array: the integer array to sort
+ * @size: the size of the array
+ * @lo: the low index of the sort range
+ * @hi: the high index of the sort range
+ *
+ * Return: void
+ */
+size_t hoare_partition(int *array, ssize_t size, ssize_t lo, ssize_t hi)
 {
-	size_t root = start, _swap, child;
+	ssize_t i = lo - 1, j = hi + 1;
+	int pivot = array[hi];
 
-	while (leftchild(root) <= end)
+	while (i < size)
 	{
-		child = leftchild(root);
-		_swap = root;
-		if (array[_swap] < array[child])
-			_swap = child;
-		if (child + 1 <= end &&
-			array[_swap] < array[child + 1])
-			_swap = child + 1;
-		if (_swap == root)
-			return;
-		swap(array, size, &array[root], &array[_swap]);
-		root = _swap;
+		while (array[++i] < pivot)
+			;
+		while (array[--j] > pivot)
+			;
+		if (i < j)
+			swap(array, size, &array[i], &array[j]);
+		else if (i >= j)
+			break;
+	}
+	return (i);
+}
+
+/**
+ * quicksort - quicksorts via hoare partitioning scheme
+ * @array: the integer array to sort
+ * @size: the size of the array
+ * @lo: the low index of the sort range
+ * @hi: the high index of the sort range
+ *
+ * Return: void
+ */
+void quicksort(int *array, size_t size, ssize_t lo, ssize_t hi)
+{
+	if (lo < hi)
+	{
+		size_t p = hoare_partition(array, size, lo, hi);
+
+		quicksort(array, size, lo, p - 1);
+		quicksort(array, size, p, hi);
 	}
 }
 
 /**
-*heapify - makes heap in-place
-*
-*@array: array to be sorted
-*@size: size of array
-*
-*/
-void heapify(int *array, size_t size)
+ * quick_sort_hoare - calls quicksort
+ * @array: the integer array to sort
+ * @size: the size of the array
+ *
+ * Return: void
+ */
+void quick_sort_hoare(int *array, size_t size)
 {
-	ssize_t start;
-
-	start = parent(size - 1);
-	while (start >= 0)
-	{
-		siftdown(array, start, size - 1, size);
-		start--;
-	}
-}
-/**
-*heap_sort - heap sort algorithm
-*
-*@array: array to sort
-*@size: size of array
-*
-*/
-void heap_sort(int *array, size_t size)
-{
-	size_t end;
-
 	if (!array || size < 2)
 		return;
-	heapify(array, size);
-	end = size - 1;
-	while (end > 0)
-	{
-		swap(array, size, &array[end], &array[0]);
-		end--;
-		siftdown(array, 0, end, size);
-	}
+	quicksort(array, size, 0, size - 1);
 }
